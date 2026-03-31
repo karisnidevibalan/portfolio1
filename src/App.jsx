@@ -273,7 +273,7 @@ function About() {
           </div>
           <div className="glass aspect-square rounded-3xl mt-8 flex flex-col items-center justify-center gap-3 group hover:border-orange-500/50 transition-all cursor-default">
             <Database className="text-orange-400 group-hover:scale-110 transition-transform" size={32} />
-            <span className="text-[10px] uppercase font-bold tracking-widest text-slate-400">DBMS Expert</span>
+            <span className="text-[10px] uppercase font-bold tracking-widest text-slate-400">DBMS</span>
           </div>
         </motion.div>
       </div>
