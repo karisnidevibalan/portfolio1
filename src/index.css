@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #22d3ee;
+  --secondary: #d946ef;
+  --accent: #10b981;
+}
+
+body {
+  @apply bg-[#020617] text-slate-100 selection:bg-cyan-500/30;
+  font-family: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
+  background-image: 
+    radial-gradient(circle at 50% -20%, #1e1b4b 0%, transparent 50%),
+    linear-gradient(rgba(15, 23, 42, 0.4) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 23, 42, 0.4) 1px, transparent 1px);
+  background-size: 100% 100%, 40px 40px, 40px 40px;
+}
+
+.glass {
+  @apply bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl;
+}
+
+.premium-badge {
+  @apply inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900/80 border border-slate-700/50 text-[10px] uppercase tracking-widest text-cyan-300 font-bold;
+}
+
+.section-title {
+  @apply text-3xl md:text-5xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-slate-500;
+}
+
+.orb {
+  @apply absolute rounded-full blur-3xl opacity-20 animate-pulse;
+}
+
+@keyframes orbit {
+  from { transform: rotate(0deg) translateX(var(--orbit-radius)) rotate(0deg); }
+  to { transform: rotate(360deg) translateX(var(--orbit-radius)) rotate(-360deg); }
+}
+
+.animate-orbit {
+  animation: orbit var(--orbit-duration) linear infinite;
+}
