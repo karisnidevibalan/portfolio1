@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform, useScroll } from "framer-motion";
 import { 
   Github, Linkedin, Mail, ExternalLink, Code2, 
   Database, Layout, Smartphone, User, Briefcase, 
   GraduationCap, MessageSquare, Send, Sparkles, 
-  ChevronRight, Terminal, Globe, Palette, Cpu
+  ChevronRight, Terminal, Globe, Palette, Cpu,
+  FileCode, Monitor, Zap
 } from "lucide-react";
 
 const container = {
@@ -87,8 +88,28 @@ function Navbar() {
 }
 
 function Hero() {
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  function handleMouseMove({ currentTarget, clientX, clientY }) {
+    const { left, top } = currentTarget.getBoundingClientRect();
+    mouseX.set(clientX - left);
+    mouseY.set(clientY - top);
+  }
+
+  const techStack = [
+    { icon: <Cpu size={24} />, name: "Java", color: "text-red-500", x: 15, y: 20, delay: 0.1 },
+    { icon: <Terminal size={24} />, name: "JavaScript", color: "text-yellow-400", x: 45, y: 10, delay: 0.2 },
+    { icon: <Globe size={24} />, name: "React", color: "text-cyan-400", x: 75, y: 25, delay: 0.3 },
+    { icon: <Zap size={24} />, name: "Vite", color: "text-purple-400", x: 25, y: 50, delay: 0.4 },
+    { icon: <Database size={24} />, name: "SQL", color: "text-emerald-400", x: 60, y: 45, delay: 0.5 },
+    { icon: <Layout size={24} />, name: "UI Design", color: "text-fuchsia-400", x: 85, y: 60, delay: 0.6 },
+    { icon: <Briefcase size={24} />, name: "MERN", color: "text-blue-400", x: 10, y: 75, delay: 0.7 },
+    { icon: <Github size={24} />, name: "Git", color: "text-white", x: 50, y: 80, delay: 0.8 },
+  ];
+
   return (
-    <section id="home" className="relative min-h-[70vh] flex items-center">
+    <section id="home" className="relative min-h-[85vh] flex items-center pt-8" onMouseMove={handleMouseMove}>
       <motion.div
         variants={container}
         initial="hidden"
@@ -144,60 +165,71 @@ function Hero() {
 
         <motion.div 
           variants={item}
-          className="relative hidden lg:block"
+          className="relative hidden lg:block h-[500px]"
         >
-          <div className="relative w-[500px] h-[500px] flex items-center justify-center scale-75 xl:scale-100">
-            {/* Orbital Rings with Glow */}
-            <div className="absolute inset-0 border border-cyan-500/10 rounded-full animate-spin-slow" />
-            <div className="absolute inset-16 border border-fuchsia-500/10 rounded-full animate-spin-reverse-slow" />
-            <div className="absolute inset-32 border border-blue-500/10 rounded-full animate-spin-slow" />
-            
-            <div className="relative z-10 text-center">
-              <div className="text-7xl font-black text-slate-800 tracking-widest opacity-20 select-none">JAVA</div>
-            </div>
+          {/* Constellation SVG Lines */}
+          <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-20">
+            <motion.line x1="15%" y1="20%" x2="45%" y2="10%" stroke="white" strokeWidth="0.5" className="glow-line" />
+            <motion.line x1="45%" y1="10%" x2="75%" y2="25%" stroke="white" strokeWidth="0.5" className="glow-line" />
+            <motion.line x1="15%" y1="20%" x2="25%" y2="50%" stroke="white" strokeWidth="0.5" className="glow-line" />
+            <motion.line x1="25%" y1="50%" x2="60%" y2="45%" stroke="white" strokeWidth="0.5" className="glow-line" />
+            <motion.line x1="60%" y1="45%" x2="75%" y2="25%" stroke="white" strokeWidth="0.5" className="glow-line" />
+            <motion.line x1="60%" y1="45%" x2="85%" y2="60%" stroke="white" strokeWidth="0.5" className="glow-line" />
+            <motion.line x1="25%" y1="50%" x2="10%" y2="75%" stroke="white" strokeWidth="0.5" className="glow-line" />
+            <motion.line x1="60%" y1="45%" x2="50%" y2="80%" stroke="white" strokeWidth="0.5" className="glow-line" />
+          </svg>
 
-            {/* Better Distributed Orbital Icons */}
-            {/* Outer Orbit (Radius 240) */}
-            <OrbitalIcon icon={<Github size={24} />} duration="30s" radius="240" delay="0s" color="text-white" label="Github" />
-            <OrbitalIcon icon={<Code2 size={24} />} duration="35s" radius="240" delay="-7s" color="text-cyan-400" label="Java" />
-            <OrbitalIcon icon={<Globe size={24} />} duration="40s" radius="240" delay="-14s" color="text-blue-400" label="React" />
-            <OrbitalIcon icon={<Cpu size={24} />} duration="45s" radius="240" delay="-21s" color="text-orange-400" label="Logic" />
-            
-            {/* Middle Orbit (Radius 170) */}
-            <OrbitalIcon icon={<Database size={24} />} duration="25s" radius="170" delay="-2s" color="text-emerald-400" label="SQL" />
-            <OrbitalIcon icon={<Layout size={24} />} duration="28s" radius="170" delay="-10s" color="text-fuchsia-400" label="CSS" />
-            <OrbitalIcon icon={<Terminal size={24} />} duration="32s" radius="170" delay="-18s" color="text-yellow-400" label="Script" />
-            
-            {/* Inner Orbit (Radius 100) */}
-            <OrbitalIcon icon={<Palette size={24} />} duration="20s" radius="100" delay="-5s" color="text-pink-400" label="UI" />
-          </div>
+          {techStack.map((tech) => (
+            <ConstellationIcon key={tech.name} tech={tech} mouseX={mouseX} mouseY={mouseY} />
+          ))}
+          
+          {/* Enhanced Background Glows */}
+          <div className="absolute -inset-20 bg-cyan-500/5 blur-[120px] rounded-full -z-20 animate-pulse" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-fuchsia-600/5 blur-[120px] rounded-full -z-20 delay-1000 animate-pulse" />
         </motion.div>
       </motion.div>
     </section>
   );
 }
 
-function OrbitalIcon({ icon, duration, radius, delay, color, label }) {
+function ConstellationIcon({ tech, mouseX, mouseY }) {
+  const [isHovered, setIsHovered] = useState(false);
+  
+  // Magnetic drift effect
+  const driftX = useSpring(useTransform(mouseX, [0, 800], [-10, 10]));
+  const driftY = useSpring(useTransform(mouseY, [0, 800], [-10, 10]));
+
   return (
-    <div 
-      className="absolute animate-orbit flex items-center justify-center pointer-events-none"
+    <motion.div
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      initial={{ opacity: 0, scale: 0 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.8, delay: tech.delay }}
       style={{ 
-        '--orbit-duration': duration, 
-        '--orbit-radius': `${radius}px`,
-        animationDelay: delay
+        position: 'absolute', 
+        left: `${tech.x}%`, 
+        top: `${tech.y}%`,
+        x: driftX,
+        y: driftY
       }}
+      className="constellation-icon group"
     >
-      <div className="group relative flex flex-col items-center">
-        <div className={`p-4 rounded-2xl glass ${color} shadow-lg pointer-events-auto hover:scale-125 transition-all duration-300 hover:rotate-6 border-white/20`}>
-          {icon}
-        </div>
-        <span className="absolute -bottom-8 opacity-0 group-hover:opacity-100 transition-opacity text-[10px] font-bold uppercase tracking-widest text-slate-400 whitespace-nowrap">
-          {label}
-        </span>
+      <div className={`${tech.color} relative z-10 transition-all duration-300`}>
+        {tech.icon}
       </div>
-    </div>
+      
+      {/* Radial Glow on Hover */}
+      <div className={`absolute inset-0 rounded-full blur-xl opacity-0 group-hover:opacity-40 transition-opacity duration-300 bg-current -z-10`} />
+      
+      {/* Label */}
+      <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 text-[8px] font-black uppercase tracking-widest text-cyan-400 whitespace-nowrap">
+        {tech.name}
+      </span>
+    </motion.div>
   );
 }
+
 
 function SectionHeading({ title, badge, center }) {
   return (
@@ -254,27 +286,26 @@ function About() {
 
 const projects = [
   {
+    title: "Appointment Scheduler",
+    stack: "React, Vite, MySQL",
+    description: "Multi-business slot booking application with real-time availability and dynamic scheduling.",
+    github: "https://github.com/Manimegalaid123/Appointment-Schedule-App",
+    color: "from-amber-400 to-orange-500"
+  },
+    {
+    title: "SMT Agency Forecasting",
+    stack: "MERN Stack",
+    description: "Sales and demand forecasting system with real-time stock tracking and predictive analytics for agencies.",
+    github: "https://github.com/Manimegalaid123/SMTAgencyProject",
+    color: "from-fuchsia-500 to-purple-600"
+  },
+  {
     title: "Resumify | ATS Builder",
     stack: "React, Tailwind, ATS Logic",
     description: "Professional ATS Resume Builder with live scoring, job-specific templates, and real-time verification.",
     github: "https://github.com/Manimegalaid123/resumebuilder",
     demo: "https://resumebuilder-jet.vercel.app/",
     color: "from-blue-500 to-cyan-400"
-  },
-  {
-    title: "Rock Paper Scissors ✊✋✌️",
-    stack: "HTML, CSS, JavaScript",
-    description: "Interactive game with animations, sound effects, and a balance system. Play against the computer and test your luck!",
-    github: "https://github.com/Manimegalaid123/SPS",
-    demo: "https://sps-black.vercel.app/",
-    color: "from-orange-500 to-red-500"
-  },
-  {
-    title: "SMT Agency Forecasting",
-    stack: "Node.js, ML, MongoDB",
-    description: "Sales and demand forecasting system with real-time stock tracking and predictive analytics for agencies.",
-    github: "https://github.com/Manimegalaid123/SMTAgencyProject",
-    color: "from-fuchsia-500 to-purple-600"
   },
   {
     title: "Project Management Pro",
@@ -284,18 +315,19 @@ const projects = [
     color: "from-emerald-500 to-teal-400"
   },
   {
-    title: "Currency Convertor 💸",
+    title: "Rock Paper Scissors",
+    stack: "HTML, CSS, JavaScript",
+    description: "Interactive game with animations, sound effects, and a balance system. Play against the computer and test your luck!",
+    github: "https://github.com/Manimegalaid123/SPS",
+    demo: "https://sps-black.vercel.app/",
+    color: "from-orange-500 to-red-500"
+  },
+  {
+    title: "Currency Convertor",
     stack: "JavaScript, API Integration",
     description: "Real-time exchange rate converter with multi-currency support and accurate dynamic calculations.",
     github: "https://github.com/Manimegalaid123/currency-Convertor",
     color: "from-blue-600 to-indigo-500"
-  },
-  {
-    title: "Appointment Scheduler",
-    stack: "React, Vite, MySQL",
-    description: "Multi-business slot booking application with real-time availability and dynamic scheduling.",
-    github: "https://github.com/Manimegalaid123/Appointment-Schedule-App",
-    color: "from-amber-400 to-orange-500"
   }
 ];
 
@@ -341,23 +373,25 @@ function Projects() {
 }
 
 const skillGroups = [
-  { title: "Languages", items: ["Java", "JavaScript", "HTML", "CSS", "C"] },
-  { title: "Frontend", items: ["React.js", "Vite", "TailwindCSS", "Animation"] },
-  { title: "Backend", items: ["Node.js", "Express.js", "JWT", "REST APIs"] },
-  { title: "Databases", items: ["MySQL", "MongoDB"] },
+  { title: "Languages", items: ["Java", "JavaScript", "C"] },
+  { title: "Frontend", items: ["React.js", "Vite"] },
+  { title: "Backend", items: ["Node.js", "Express.js", "REST APIs"] },
+  { title: "Database", items: ["MySQL", "MongoDB"] },
+  { title: "Authentication", items: ["JWT"] },
+  { title: "Tools", items: ["Git & GitHub", "Postman", "VS Code"] },
 ];
 
 function Skills() {
   return (
     <section id="skills" className="text-white">
       <SectionHeading title="Technical Expertise" badge="Capabilities" center />
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
         {skillGroups.map((group) => (
           <motion.div key={group.title} variants={item} className="space-y-6">
-            <h4 className="text-xs uppercase font-bold tracking-[0.3em] text-slate-500 pl-4 border-l-2 border-slate-800">{group.title}</h4>
+            <h4 className="text-xs uppercase font-bold tracking-[0.3em] text-cyan-400 pl-4 border-l-2 border-cyan-800">{group.title}</h4>
             <div className="flex flex-col gap-3">
               {group.items.map((skill) => (
-                <div key={skill} className={`glass py-3 px-5 rounded-xl text-sm font-medium transition-all hover:bg-white/5 ${skill === 'Java' ? 'border-cyan-500 bg-cyan-500/5 text-cyan-200' : 'hover:border-white/20'}`}>
+                <div key={skill} className={`glass py-3 px-5 rounded-xl text-sm font-medium transition-all hover:bg-white/5 ${['Java', 'React.js', 'Node.js', 'MySQL'].includes(skill) ? 'border-cyan-500 bg-cyan-500/5 text-cyan-200' : 'hover:border-white/20'}`}>
                   {skill}
                 </div>
               ))}

@@ -34,11 +34,26 @@ body {
   @apply absolute rounded-full blur-3xl opacity-20 animate-pulse;
 }
 
-@keyframes orbit {
-  from { transform: rotate(0deg) translateX(var(--orbit-radius)) rotate(0deg); }
-  to { transform: rotate(360deg) translateX(var(--orbit-radius)) rotate(-360deg); }
+.constellation-icon {
+  @apply relative flex items-center justify-center transition-all duration-500 cursor-default p-2;
 }
 
-.animate-orbit {
-  animation: orbit var(--orbit-duration) linear infinite;
+.constellation-icon:hover {
+  @apply scale-150 z-20;
+  filter: drop-shadow(0 0 15px currentColor);
+}
+
+.glow-line {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: draw-line 2s ease-out forwards, pulse-line 4s ease-in-out infinite alternate;
+}
+
+@keyframes draw-line {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes pulse-line {
+  from { opacity: 0.1; }
+  to { opacity: 0.4; }
 }
