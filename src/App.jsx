@@ -287,7 +287,7 @@ function About() {
 const projects = [
   {
     title: "Appointment Scheduler",
-    stack: "React, Vite, MySQL",
+    stack: "MERN Stack",
     description: "Multi-business slot booking application with real-time availability and dynamic scheduling.",
     github: "https://github.com/Manimegalaid123/Appointment-Schedule-App",
     color: "from-amber-400 to-orange-500"
