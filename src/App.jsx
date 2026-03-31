@@ -126,9 +126,6 @@ function Hero() {
             <h1 className="text-5xl md:text-7xl font-bold leading-tight tracking-tighter">
               I'm <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-fuchsia-500">Manimegalai</span>
             </h1>
-            <h2 className="text-2xl md:text-3xl font-medium text-slate-400 flex items-center gap-3">
-              Software Developer <Sparkles size={24} className="text-fuchsia-400" />
-            </h2>
           </div>
 
           <p className="text-lg text-slate-400 max-w-xl leading-relaxed font-light">
